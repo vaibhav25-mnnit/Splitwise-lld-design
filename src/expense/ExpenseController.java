@@ -9,18 +9,26 @@ import user.User;
 import java.util.List;
 
 public class ExpenseController {
-    BalanceSheetController  balanceSheetController;
+    private  final BalanceSheetController  balanceSheetController;
 
-    public ExpenseController() {
-        balanceSheetController = new BalanceSheetController();
+    public ExpenseController(BalanceSheetController balanceSheetController) {
+        this.balanceSheetController = balanceSheetController;
     }
 
     public Expense createExpense(String expenseId, String description, User paidByUser, ExpenseSplitType splitType,double expenseAmount, List<Split> splitDetails)
     {
+        //Step 1 create split using split factory
         ExpenseSplit expenseSplit =  SplitFactory.createSplit(splitType);
+
+
+        //validate split
+        expenseSplit.validateSplitRequest(splitDetails, expenseAmount);
+
+        //create expense amount
         Expense expense = new Expense(expenseId, description, expenseAmount, paidByUser, splitType, splitDetails);
 
-        balanceSheetController.updateUserExpenseBalanceSheet(paidByUser, splitDetails, expenseAmount);
+        //update balance sheet
+       balanceSheetController.updateBalanceSheet(paidByUser, splitDetails);
         return expense;
     }
 

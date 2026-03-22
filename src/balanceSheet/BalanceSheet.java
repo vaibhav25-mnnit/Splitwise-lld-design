@@ -12,18 +12,15 @@ public class BalanceSheet {
         this.balanceSheet = new HashMap<>();
     }
 
-
     public void updateBalance(String userId, double amount)
     {
         balanceSheet.merge(userId, amount, Double::sum);
     }
 
-
     public double getBalance(String userId)
     {
         return balanceSheet.getOrDefault(userId, 0.00);
     }
-
 
     public Map<String, Double> getBalanceSheet() {
         return balanceSheet;

@@ -16,9 +16,9 @@ public class BalanceSheetController {
         this.balanceSheetMap = new HashMap<>();
     }
 
-    public void initUser(String userId)
+    public void initUser(User user)
     {
-        balanceSheetMap.put(userId, new BalanceSheet());
+        balanceSheetMap.put(user.getUserId(), new BalanceSheet());
     }
 
     public void updateBalanceSheet(User paidBy, List<Split> splits) {
@@ -54,6 +54,8 @@ public class BalanceSheetController {
 
             String otherUserId = entry.getKey();
             double amount      = entry.getValue();
+
+            System.out.println("Looking up userId: " + otherUserId);
 
             // Skip near zero → already settled
             if (Math.abs(amount) < 0.01) continue;
